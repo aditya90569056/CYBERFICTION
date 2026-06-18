@@ -13,6 +13,26 @@ const followingCount = document.getElementById("followingCount");
 const repoCount = document.getElementById("repoCount");
 const repoList = document.getElementById("repoList");
 
+async function fetchAllRepos() {
+  const repos = [];
+  let page = 1;
+
+  while (true) {
+    const response = await fetch(`${REPOS_API_URL}&page=${page}`);
+    if (!response.ok) {
+      throw new Error(`GitHub repo request failed with status ${response.status}.`);
+    }
+    const pageRepos = await response.json();
+    repos.push(...pageRepos);
+    if (pageRepos.length < 100) {
+      break;
+    }
+    page += 1;
+  }
+
+  return repos;
+}
+
 function createRepoCard(repo) {
   const column = document.createElement("div");
   column.className = "col-12 col-md-6";
@@ -81,23 +101,19 @@ function renderRepos(repos) {
 
 async function loadGitHubData() {
   try {
-    const [userResponse, reposResponse] = await Promise.all([
-      fetch(USER_API_URL),
-      fetch(REPOS_API_URL),
-    ]);
-
-    if (!userResponse.ok || !reposResponse.ok) {
-      throw new Error("Unable to fetch GitHub details right now.");
+    const userResponse = await fetch(USER_API_URL);
+    if (!userResponse.ok) {
+      throw new Error(`GitHub profile request failed with status ${userResponse.status}.`);
     }
 
     const user = await userResponse.json();
-    const repos = await reposResponse.json();
+    const repos = await fetchAllRepos();
 
     renderProfile(user);
     renderRepos(repos);
     statusMessage.textContent = `Showing live data from github.com/${USERNAME}`;
   } catch (error) {
-    statusMessage.textContent = error.message;
+    statusMessage.textContent = `Unable to load GitHub details: ${error.message}`;
   }
 }
 
