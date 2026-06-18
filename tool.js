@@ -1,14 +1,104 @@
-const info=document.getElementById("info")
-const h1=document.getElementById("title")
-const h2=document.getElementById("preview")
-const ima=document.getElementById("images")
-async function abcd(){
-    const blob=await fetch(`https://meme-api.com/gimme`)
-    data =await blob.json()
-    h1.innerText=data.title
-    info.innerText=data.subreddit
-    ima.src=data.url
-    
+const USERNAME = "aditya90569056";
+const USER_API_URL = `https://api.github.com/users/${USERNAME}`;
+const REPOS_API_URL = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`;
 
-   
+const statusMessage = document.getElementById("statusMessage");
+const profileCard = document.getElementById("profileCard");
+const avatarImage = document.getElementById("avatarImage");
+const profileName = document.getElementById("profileName");
+const profileUsername = document.getElementById("profileUsername");
+const profileBio = document.getElementById("profileBio");
+const followersCount = document.getElementById("followersCount");
+const followingCount = document.getElementById("followingCount");
+const repoCount = document.getElementById("repoCount");
+const repoList = document.getElementById("repoList");
+
+function createRepoCard(repo) {
+  const column = document.createElement("div");
+  column.className = "col-12 col-md-6";
+
+  const card = document.createElement("article");
+  card.className = "card h-100 border";
+
+  const body = document.createElement("div");
+  body.className = "card-body d-flex flex-column";
+
+  const titleLink = document.createElement("a");
+  titleLink.href = repo.html_url;
+  titleLink.target = "_blank";
+  titleLink.rel = "noopener noreferrer";
+  titleLink.className = "fw-semibold text-decoration-none";
+  titleLink.textContent = repo.name;
+
+  const description = document.createElement("p");
+  description.className = "text-secondary small mt-2 mb-3";
+  description.textContent = repo.description || "No description provided.";
+
+  const meta = document.createElement("div");
+  meta.className = "d-flex flex-wrap gap-2 mt-auto";
+
+  const languageBadge = document.createElement("span");
+  languageBadge.className = "badge text-bg-light border";
+  languageBadge.textContent = `Language: ${repo.language || "N/A"}`;
+
+  const starsBadge = document.createElement("span");
+  starsBadge.className = "badge text-bg-light border";
+  starsBadge.textContent = `Stars: ${repo.stargazers_count}`;
+
+  const forksBadge = document.createElement("span");
+  forksBadge.className = "badge text-bg-light border";
+  forksBadge.textContent = `Forks: ${repo.forks_count}`;
+
+  meta.append(languageBadge, starsBadge, forksBadge);
+  body.append(titleLink, description, meta);
+  card.append(body);
+  column.append(card);
+
+  return column;
 }
+
+function renderProfile(user) {
+  avatarImage.src = user.avatar_url;
+  profileName.textContent = user.name || USERNAME;
+  profileUsername.textContent = `@${user.login}`;
+  profileBio.textContent = user.bio || "No bio available on profile.";
+  followersCount.textContent = `Followers: ${user.followers}`;
+  followingCount.textContent = `Following: ${user.following}`;
+  repoCount.textContent = `Public repos: ${user.public_repos}`;
+  profileCard.classList.remove("d-none");
+}
+
+function renderRepos(repos) {
+  repoList.textContent = "";
+  if (!repos.length) {
+    statusMessage.textContent = "No repositories found on GitHub.";
+    return;
+  }
+  repos.forEach((repo) => {
+    repoList.appendChild(createRepoCard(repo));
+  });
+}
+
+async function loadGitHubData() {
+  try {
+    const [userResponse, reposResponse] = await Promise.all([
+      fetch(USER_API_URL),
+      fetch(REPOS_API_URL),
+    ]);
+
+    if (!userResponse.ok || !reposResponse.ok) {
+      throw new Error("Unable to fetch GitHub details right now.");
+    }
+
+    const user = await userResponse.json();
+    const repos = await reposResponse.json();
+
+    renderProfile(user);
+    renderRepos(repos);
+    statusMessage.textContent = `Showing live data from github.com/${USERNAME}`;
+  } catch (error) {
+    statusMessage.textContent = error.message;
+  }
+}
+
+loadGitHubData();
