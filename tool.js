@@ -21,7 +21,7 @@ async function fetchAllRepos() {
 
   do {
     if (page > MAX_PAGINATION_REQUESTS) {
-      throw new Error("Repository pagination limit reached.");
+      throw new Error(`Repository pagination limit of ${MAX_PAGINATION_REQUESTS} pages reached. Some repositories may not be displayed.`);
     }
     const response = await fetch(`${REPOS_API_URL}&page=${page}`);
     if (!response.ok) {
