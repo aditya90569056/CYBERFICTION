@@ -16,19 +16,21 @@ const repoList = document.getElementById("repoList");
 async function fetchAllRepos() {
   const repos = [];
   let page = 1;
+  const MAX_PAGES = 20;
+  let pageRepos = [];
 
-  while (true) {
+  do {
+    if (page > MAX_PAGES) {
+      throw new Error("Repository pagination limit reached.");
+    }
     const response = await fetch(`${REPOS_API_URL}&page=${page}`);
     if (!response.ok) {
       throw new Error(`GitHub repo request failed with status ${response.status}.`);
     }
-    const pageRepos = await response.json();
+    pageRepos = await response.json();
     repos.push(...pageRepos);
-    if (pageRepos.length < 100) {
-      break;
-    }
     page += 1;
-  }
+  } while (pageRepos.length === 100);
 
   return repos;
 }
@@ -89,7 +91,7 @@ function renderProfile(user) {
 }
 
 function renderRepos(repos) {
-  repoList.textContent = "";
+  repoList.replaceChildren();
   if (!repos.length) {
     statusMessage.textContent = "No repositories found on GitHub.";
     return;
