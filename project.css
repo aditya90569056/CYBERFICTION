@@ -1,0 +1,340 @@
+:root{
+    --bg:#000;
+    --white:#fff;
+    --body:#ccc;
+    --muted:#999;
+    --border:#262626;
+  }
+  
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+  
+  body{
+    background:var(--bg);
+    color:white;
+    overflow-x:hidden;
+  }
+  
+  /* NAV */
+  
+  .navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:56px;
+  
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  
+    padding:0 40px;
+  
+    z-index:100;
+  }
+  
+  .logo{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+  
+    font-family:"Saira Condensed",sans-serif;
+    font-size:14px;
+    letter-spacing:6px;
+    color:white;
+  }
+  
+  .nav-btn{
+    background:none;
+    border:none;
+  
+    color:white;
+  
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    letter-spacing:2px;
+  
+    cursor:pointer;
+  }
+  
+  /* HERO */
+  
+  .hero{
+    position:relative;
+    height:100vh;
+  }
+  
+  .hero-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  
+  .overlay{
+    position:absolute;
+    inset:0;
+  
+    background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.15),
+      rgba(0,0,0,.8)
+    );
+  }
+  
+  .hero-content{
+    position:absolute;
+    left:50%;
+    top:50%;
+  
+    transform:translate(-50%,-50%);
+  
+    text-align:center;
+  
+    width:min(900px,90%);
+  }
+  
+  .caption{
+    font-family:"JetBrains Mono",monospace;
+    letter-spacing:2px;
+    font-size:11px;
+  
+    margin-bottom:20px;
+  }
+  
+  .hero h1{
+    font-family:"Saira Condensed",sans-serif;
+  
+    font-size:clamp(4rem,9vw,8rem);
+  
+    letter-spacing:4px;
+    font-weight:400;
+  
+    margin-bottom:25px;
+  }
+  
+  .description{
+    font-family:"Cormorant Garamond",serif;
+  
+    color:var(--body);
+  
+    font-size:1.2rem;
+  
+    max-width:700px;
+    margin:auto;
+  }
+  
+  .buttons{
+    margin-top:40px;
+  
+    display:flex;
+    justify-content:center;
+    gap:20px;
+  }
+  
+  .btn-primary{
+    text-decoration:none;
+  
+    color:white;
+  
+    border:1px solid white;
+  
+    padding:14px 32px;
+  
+    border-radius:999px;
+  
+    font-family:"JetBrains Mono",monospace;
+    letter-spacing:2.5px;
+    font-size:14px;
+  }
+  
+  /* SECTION */
+  
+  .about{
+    padding:120px 10%;
+  }
+  
+  .container{
+    max-width:1000px;
+    margin:auto;
+  }
+  
+  .about h2{
+    font-family:"Saira Condensed",sans-serif;
+  
+    font-size:48px;
+    letter-spacing:3px;
+    font-weight:400;
+  
+    margin-bottom:30px;
+  }
+  
+  .about p{
+    color:var(--body);
+  
+    font-family:"Cormorant Garamond",serif;
+  
+    font-size:20px;
+  
+    line-height:1.8;
+  
+    max-width:700px;
+  }
+  
+  /* MOBILE */
+  
+  @media(max-width:768px){
+  
+    .navbar{
+      padding:0 20px;
+    }
+  
+    .hero h1{
+      font-size:4rem;
+    }
+  
+    .buttons{
+      flex-direction:column;
+    }
+  
+    .about{
+      padding:80px 25px;
+    }
+  
+    .about h2{
+      font-size:32px;
+    }
+  }
+  /* ==========================
+   PROJECTS SECTION
+========================== */
+
+.projects{
+    padding:120px 8%;
+    background:#000;
+    color:#fff;
+}
+
+.projects h2{
+    font-family:"Saira Condensed",sans-serif;
+    font-size:clamp(2.5rem,5vw,4rem);
+    font-weight:400;
+    letter-spacing:4px;
+    text-transform:uppercase;
+
+    margin-bottom:80px;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.project-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:40px;
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.project-card{
+    border:1px solid #262626;
+    padding:40px;
+    min-height:320px;
+
+    display:flex;
+    flex-direction:column;
+
+    transition:0.4s ease;
+}
+
+.project-card:hover{
+    border-color:#fff;
+    transform:translateY(-8px);
+}
+
+/* ==========================
+   TITLE
+========================== */
+
+.project-card h3{
+    font-family:"Saira Condensed",sans-serif;
+    font-size:2rem;
+    font-weight:400;
+    letter-spacing:2px;
+    text-transform:uppercase;
+
+    margin-bottom:20px;
+}
+
+/* ==========================
+   DESCRIPTION
+========================== */
+
+.project-card p{
+    font-family:"Cormorant Garamond",serif;
+    color:#cccccc;
+
+    font-size:1.1rem;
+    line-height:1.8;
+
+    margin-bottom:auto;
+}
+
+/* ==========================
+   LINK
+========================== */
+
+.project-card a{
+    margin-top:40px;
+
+    text-decoration:none;
+
+    color:#c3d9f3;
+
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    display:inline-block;
+}
+
+.project-card a::after{
+    content:" →";
+    transition:.3s;
+}
+
+.project-card:hover a::after{
+    margin-left:10px;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:768px){
+
+    .projects{
+        padding:80px 25px;
+    }
+
+    .projects h2{
+        margin-bottom:50px;
+    }
+
+    .project-card{
+        padding:30px;
+        min-height:auto;
+    }
+
+    .project-card h3{
+        font-size:1.6rem;
+    }
+}
