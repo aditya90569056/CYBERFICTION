@@ -1,6 +1,7 @@
 const USERNAME = "aditya90569056";
 const USER_API_URL = `https://api.github.com/users/${USERNAME}`;
 const REPOS_API_URL = `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`;
+const MAX_PAGINATION_REQUESTS = 20;
 
 const statusMessage = document.getElementById("statusMessage");
 const profileCard = document.getElementById("profileCard");
@@ -16,11 +17,10 @@ const repoList = document.getElementById("repoList");
 async function fetchAllRepos() {
   const repos = [];
   let page = 1;
-  const MAX_PAGES = 20;
   let pageRepos = [];
 
   do {
-    if (page > MAX_PAGES) {
+    if (page > MAX_PAGINATION_REQUESTS) {
       throw new Error("Repository pagination limit reached.");
     }
     const response = await fetch(`${REPOS_API_URL}&page=${page}`);
